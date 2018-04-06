@@ -39,7 +39,7 @@ module Spielbash
       return if pid.empty?
 
       loop do
-        execute_with('pgrep', "-P #{pid}", true)
+        exec_wait_check_cmd(pid)
         children = last_stdout
         break if children.empty?
       end
@@ -58,6 +58,15 @@ module Spielbash
     end
 
     private
+
+    def exec_wait_check_cmd(pid)
+      if context.wait_check_cmd.nil?
+        execute_with('pgrep', "-P #{pid}", true)
+      else
+        cmd = context.wait_check_cmd.split
+        execute_with_exactly(cmd.first, true, false, true, *cmd.drop(1))
+      end
+    end
 
     def execute_tmux_with(arguments, wait = false)
       execute_with('tmux', arguments, wait)

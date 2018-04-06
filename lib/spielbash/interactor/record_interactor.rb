@@ -12,8 +12,9 @@ module Spielbash
       wait = opts['wait']
       width = opts['width']
       height = opts['height']
+      wait_check_cmd = opts['wait_check_cmd']
 
-      context = Spielbash::Context.new(typing_delay_s, reading_delay_s, wait, width, height)
+      context = Spielbash::Context.new(typing_delay_s, reading_delay_s, wait, width, height, wait_check_cmd)
 
       actions = create_actions(context, script['scenes'])
       pre_run_actions = create_actions(context, script['pre-run'])
@@ -24,6 +25,7 @@ module Spielbash
     end
 
     private
+
     def create_actions(context, scenes)
       actions = []
       for scene in scenes do
@@ -36,27 +38,34 @@ module Spielbash
                                                       action_opts['height'])
 
         action = case
-                   when scene.has_key?('message') then
-                     value = scene['message']
-                     message_context = Spielbash::MessageContext.new(context,
-                                                                     action_opts['typing_delay_s'],
-                                                                     action_opts['reading_delay_s'],
-                                                                     action_opts['wait'],
-                                                                     action_opts['width'],
-                                                                     action_opts['height'],
-                                                                     action_opts['delete'].nil? ? true : action_opts['delete'])
-                     Spielbash::MessageAction.new(value, message_context)
-                   when scene.has_key?('command') then
-                     value = scene['command']
-                     Spielbash::CommandAction.new(value, action_context)
-                   when scene.has_key?('pause') then
-                     value = scene['pause']
-                     Spielbash::PauseAction.new(value, action_context)
-                   when scene.has_key?('key') then
-                     value = scene['key']
-                     Spielbash::PressKeyAction.new(value, action_context)
-                   else
-                     not_implemented
+                 when scene.has_key?('message') then
+                   value = scene['message']
+                   message_context = Spielbash::MessageContext.new(context,
+                                                                   action_opts['typing_delay_s'],
+                                                                   action_opts['reading_delay_s'],
+                                                                   action_opts['wait'],
+                                                                   action_opts['width'],
+                                                                   action_opts['height'],
+                                                                   action_opts['delete'].nil? ? true : action_opts['delete'])
+                   Spielbash::MessageAction.new(value, message_context)
+                 when scene.has_key?('command') then
+                   value = scene['command']
+                   Spielbash::CommandAction.new(value, action_context)
+                 when scene.has_key?('pause') then
+                   value = scene['pause']
+                   Spielbash::PauseAction.new(value, action_context)
+                 when scene.has_key?('key') then
+                   value = scene['key']
+                   Spielbash::PressKeyAction.new(value, action_context)
+                 when scene.has_key?('new_env') then
+                   cmd = scene['new_env']
+                   wait_cmd = scene['wait_check_cmd']
+                   Spielbash::NewEnvironmentAction.new(cmd, wait_cmd, context)
+                 when scene.has_key?('delete_env') then
+                   cmd = scene['delete_env']
+                   Spielbash::DeleteEnvironmentAction.new(cmd, context)
+                 else
+                   not_implemented
                  end
 
         actions << action

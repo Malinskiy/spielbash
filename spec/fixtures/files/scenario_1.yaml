@@ -7,23 +7,29 @@ options:
   reading_delay_s: 1
 pre-run:
   - pause: 1
+  - new_env: 'docker run -it --rm --name ubuntu ubuntu bash'
+    wait_check_cmd: 'docker exec ubuntu pgrep -P 1'
   - command: clear
   - pause: 1
 post-run:
+  - delete_env: 'exit'
   - pause: 1
 scenes:
+  - pause: 1
   - command: ls
   - message: 'Here is a list of files. Nice!'
   - pause: 3
   - command: sleep 5
   - message: 'Great Scott! We can wait for the end of command execution!'
-  - command: sleep 8
+  - command: sleep 7
     options:
       wait: false
   - message: 'Or not :) then you need to manually create pauses'
     options:
       delete: true
       reading_delay_s: 2
+  - command: 'apt-get update'
+  - command: 'apt-get -yq install vim'
   - pause: 5
   - command: vim
     options:
