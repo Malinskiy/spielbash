@@ -1,3 +1,6 @@
+[![Gem](https://img.shields.io/gem/v/spielbash.svg)](https://rubygems.org/gems/spielbash)
+[![Gem](https://img.shields.io/gem/dt/spielbash.svg)](https://rubygems.org/gems/spielbash)
+
 # Spielbash
 
 Spielbash helps you to automate asciicasts with asciinema.
