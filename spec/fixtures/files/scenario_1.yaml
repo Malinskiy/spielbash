@@ -1,0 +1,43 @@
+title: a beautiful movie
+options:
+  width: 80
+  height: 24
+  wait: true
+  typing_delay_s: 0.1
+  reading_delay_s: 1
+pre-run:
+  - pause: 1
+  - command: clear
+  - pause: 1
+post-run:
+  - pause: 1
+scenes:
+  - command: ls
+  - message: 'Here is a list of files. Nice!'
+  - pause: 3
+  - command: sleep 5
+  - message: 'Great Scott! We can wait for the end of command execution!'
+  - command: sleep 8
+    options:
+      wait: false
+  - message: 'Or not :) then you need to manually create pauses'
+    options:
+      delete: true
+      reading_delay_s: 2
+  - pause: 5
+  - command: vim
+    options:
+      wait: false
+  - key: 'i'
+  - message: 'Message action works inside apps too!'
+    options:
+      delete: false
+  - key: 'Escape'
+  - command: \:q!
+  - message: 'You can override global options per command. For example typing delay'
+    options:
+      typing_delay_s: 0.03
+      reading_delay_s: 2
+  - message: 'I hope you enjoyed :)'
+    options:
+      reading_delay_s: 2
