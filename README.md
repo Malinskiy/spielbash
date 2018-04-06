@@ -1,8 +1,16 @@
 # Spielbash
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/spielbash`. To experiment with that code, run `bin/console` for an interactive prompt.
+Spielbash helps you to automate asciicasts with asciinema.
 
-TODO: Delete this and the text above, and describe your gem
+![Sample output](sample/sample.gif?raw=true "Sample")
+
+Requirements
+------------
+
+* asciinema > 1.0
+* tmux
+* resize
+* pgrep
 
 ## Installation
 
@@ -22,7 +30,38 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```console
+$ spielbash -h
+NAME
+    spielbash - Tool to automate bash movie-making with asciinema. Be the Spielberg of bash
+
+SYNOPSIS
+    spielbash [global options] command [command options] [arguments...]
+
+GLOBAL OPTIONS
+    --help             - Show this message
+    -v, --[no-]verbose - Be verbose
+
+COMMANDS
+    help   - Shows a list of commands or help for one command
+    record - Create a recording
+```
+
+```console
+$ spielbash record -h
+NAME
+    record - Create a recording
+
+SYNOPSIS
+    spielbash [global options] record [command options] 
+
+COMMAND OPTIONS
+    -o, --output=arg - Output file (default: none)
+    --script=arg     - Script file path (default: none)
+
+```
+
+See [scenario_1.yaml](spec/fixtures/files/scenario_1.yaml) for more detail on the script file
 
 ## Development
 
@@ -32,11 +71,13 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/spielbash. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/Malinskiy/spielbash. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+This project is a complete rewrite of [spielbash by Red Hat Cloud Innovation Practice](https://github.com/redhat-cip/spielbash) in Ruby.
 
 ## Code of Conduct
 
