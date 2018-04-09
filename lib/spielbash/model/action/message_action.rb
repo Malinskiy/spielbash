@@ -15,6 +15,7 @@ module Spielbash
       sleep(action_context.reading_delay_s)
 
       session.send_key('C-h', message.length) if (action_context.delete)
+      sleep(action_context.typing_delay_s)
     end
   end
 end

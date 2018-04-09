@@ -31,7 +31,6 @@ module Spielbash
         action.execute(session)
       end
 
-      session.stop_recording
       session.close_session
     end
 

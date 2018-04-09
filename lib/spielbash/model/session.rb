@@ -26,10 +26,7 @@ module Spielbash
     end
 
     def close_session
-      send_key("exit")
-      send_key('C-m')
-
-      wait
+      send_key("exit C-m")
     end
 
     # This will wait for tmux session pid to not have any child processes
@@ -47,7 +44,7 @@ module Spielbash
 
     def send_key(key, count=1)
       key = 'Space' if key == ' '
-      execute_tmux_with("send-keys -t #{name} -N #{count} #{key}")
+      execute_tmux_with("send-keys -t #{name} -N #{count} #{key}", true)
     end
 
     def start_recording
@@ -60,7 +57,7 @@ module Spielbash
     private
 
     def exec_wait_check_cmd(pid)
-      if context.wait_check_cmd.nil?
+      if is_real_environment
         execute_with('pgrep', "-P #{pid}", true)
       else
         cmd = context.wait_check_cmd.split
@@ -78,7 +75,7 @@ module Spielbash
     end
 
     def execute_with_exactly(cmd, wait, io_inherit, leader, *arguments)
-      raise "Please install #{cmd}" if which(cmd).nil?
+      raise "Please install #{cmd}" if is_real_environment && which(cmd).nil?
 
       process = ChildProcess.build(cmd, *arguments)
       process.leader = leader
@@ -96,6 +93,10 @@ module Spielbash
       end
 
       process
+    end
+
+    def is_real_environment
+      context.wait_check_cmd.nil?
     end
 
     def output(file)
