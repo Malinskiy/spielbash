@@ -24,14 +24,6 @@ module Spielbash
       false
     end
 
-    pre do |global_options, command, options, args|
-      help_now!('pgrep is not installed!') unless which('pgrep')
-      help_now!('docker is not installed!') unless which('docker')
-      help_now!('tmux is not installed!') unless which('tmux')
-      help_now!('resize is not installed!') unless which('resize')
-      help_now!('asciinema is not installed!') unless which('asciinema')
-    end
-
     desc 'Create a recording'
     command :record do |c|
       c.desc 'Script file path'
@@ -42,6 +34,13 @@ module Spielbash
       c.action do |_, options, _|
         script_path = options[:script]
         output_path = options[:output]
+
+        help_now!('pgrep is not installed!') unless which('pgrep')
+        help_now!('docker is not installed!') unless which('docker')
+        help_now!('tmux is not installed!') unless which('tmux')
+        help_now!('resize is not installed!') unless which('resize')
+        help_now!('asciinema is not installed!') unless which('asciinema')
+
         Spielbash::RecordInteractor.new().execute(script_path, output_path)
       end
     end
