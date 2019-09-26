@@ -17,8 +17,8 @@ module Spielbash
       context = Spielbash::Context.new(typing_delay_s, reading_delay_s, wait, width, height, wait_check_cmd)
 
       actions = create_actions(context, script['scenes'])
-      pre_run_actions = create_actions(context, script['pre-run'])
-      post_run_actions = create_actions(context, script['post-run'])
+      pre_run_actions = script['pre-run'].nil? ? [] : create_actions(context, script['pre-run'])
+      post_run_actions = script['post-run'].nil? ? [] : create_actions(context, script['post-run'])
 
       movie = Spielbash::Movie.new(title, pre_run_actions, actions, post_run_actions, context, output_path)
       movie.shoot
