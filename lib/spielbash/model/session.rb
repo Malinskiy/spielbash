@@ -58,6 +58,10 @@ module Spielbash
       execute_with_exactly('asciinema', false, true, false, "rec", "-y", "-c", "tmux attach -t #{name}", "#{output_path}")
     end
 
+    def execute_tmux_with(arguments, wait = false)
+      execute_with('tmux', arguments, wait)
+    end
+
     private
 
     def exec_wait_check_cmd(pid)
@@ -67,10 +71,6 @@ module Spielbash
         cmd = context.wait_check_cmd.split
         execute_with_exactly(cmd.first, true, false, true, *cmd.drop(1))
       end
-    end
-
-    def execute_tmux_with(arguments, wait = false)
-      execute_with('tmux', arguments, wait)
     end
 
     def execute_with(cmd, arguments, wait = false, leader = true, io_inherit = false)

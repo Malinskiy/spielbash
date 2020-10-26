@@ -64,6 +64,9 @@ module Spielbash
                  when scene.has_key?('delete_env') then
                    cmd = scene['delete_env']
                    Spielbash::DeleteEnvironmentAction.new(cmd, context)
+                 when scene.has_key?('tmux_command') then
+                   cmd = scene['tmux_command']
+                   Spielbash::TmuxCommandAction.new(cmd, action_context)
                  else
                    not_implemented
                  end
