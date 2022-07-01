@@ -43,7 +43,11 @@ module Spielbash
     end
 
     def send_key(key, count=1)
-      key = 'Space' if key == ' '
+      key = case key
+              when ' ' then 'Space'
+              when ';' then '\\;'
+              else key
+            end
       execute_tmux_with("send-keys -t #{name} -N #{count} #{key}", true)
     end
 
