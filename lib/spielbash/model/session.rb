@@ -43,7 +43,11 @@ module Spielbash
     end
 
     def send_key(key, count=1)
-      key = 'Space' if key == ' '
+      key = case key
+              when ' ' then 'Space'
+              when ';' then '\\;'
+              else key
+            end
       execute_tmux_with("send-keys -t #{name} -N #{count} #{key}", true)
     end
 
@@ -52,6 +56,10 @@ module Spielbash
       pid = last_stdout.strip
       execute_with('pgrep', "-P #{pid}", true)
       execute_with_exactly('asciinema', false, true, false, "rec", "-y", "-c", "tmux attach -t #{name}", "#{output_path}")
+    end
+
+    def execute_tmux_with(arguments, wait = false)
+      execute_with('tmux', arguments, wait)
     end
 
     private
@@ -63,10 +71,6 @@ module Spielbash
         cmd = context.wait_check_cmd.split
         execute_with_exactly(cmd.first, true, false, true, *cmd.drop(1))
       end
-    end
-
-    def execute_tmux_with(arguments, wait = false)
-      execute_with('tmux', arguments, wait)
     end
 
     def execute_with(cmd, arguments, wait = false, leader = true, io_inherit = false)
